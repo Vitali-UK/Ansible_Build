@@ -1,0 +1,19 @@
+- name: Deploy Blazor App
+  hosts: production
+  become: yes
+  tasks:
+    - name: Copy the Blazor app files
+      synchronize:
+        src: /path/to/local/blazor-app
+        dest: /path/to/remote/blazor-app
+        mode: "pull"
+
+    - name: Install .NET Core runtime
+      apt:
+        name: dotnet-runtime-3.1
+        state: present
+
+    - name: Start the Blazor app
+      command: dotnet /path/to/remote/blazor-app/bin/Debug/netcoreapp3.1/blazor-app.dll
+      args:
+        chdir: /path/to/remote/blazor-app
